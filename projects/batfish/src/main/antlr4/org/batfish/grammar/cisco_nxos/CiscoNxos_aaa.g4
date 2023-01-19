@@ -185,7 +185,9 @@ aaa_authentication_login
   LOGIN
   (
     aaa_authentication_login_default
+    | aaa_authentication_login_console
     | aaa_authentication_login_error_enable
+    | aaa_authentication_login_ascii_authentication
   )
 ;
 
@@ -197,9 +199,22 @@ aaa_authentication_login_default
   )? LOCAL? NEWLINE
 ;
 
+aaa_authentication_login_console
+:
+  CONSOLE
+  (
+    GROUP groups += aaa_group_name+
+  )? LOCAL? NEWLINE
+;
+
 aaa_authentication_login_error_enable
 :
   ERROR_ENABLE NEWLINE
+;
+
+aaa_authentication_login_ascii_authentication
+:
+  ASCII_AUTHENTICATION NEWLINE
 ;
 
 aaa_authorization

@@ -204,6 +204,8 @@ AS_PATH
 
 AS_SET: 'as-set';
 
+ASCII_AUTHENTICATION: 'ascii-authentication';
+
 ASSOCIATE: 'associate';
 
 ASSOCIATE_VRF: 'associate-vrf';
@@ -849,7 +851,7 @@ GROUP
   // If preceded by 'community' and then a secret, followed by the name of a user group.
   // Otherwise, stay in default mode.
   {
-    if (lastTokenType() == DEFAULT) {
+    if (lastTokenType() == DEFAULT || lastTokenType() == CONSOLE) {
       pushMode(M_AaaGroup);
     } else if (secondToLastTokenType() == COMMUNITY && lastTokenType() == WORD) {
       pushMode(M_Word);
@@ -3090,6 +3092,10 @@ M_AaaGroup_WS
   F_Whitespace+ -> channel ( HIDDEN )
 ;
 
+M_AaaGroup_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , popMode
+;
 
 mode M_AliasName;
 

@@ -19,7 +19,11 @@ aaa accounting default group aaa_server_group1 aaa_server_group2 local
 
 ! aaa groups must be defined before being referenced
 aaa authentication login default group aaa_server_group1 local                                                                                                                                                               
+! aaa authentication can be applied specifically for console login
+aaa authentication login console group aaa_server_group1 local
+
 aaa authentication login error-enable
+aaa authentication login ascii-authentication
 
 ! aaa groups must be defined before being referenced
 aaa authorization commands default group aaa_server_group1 local
