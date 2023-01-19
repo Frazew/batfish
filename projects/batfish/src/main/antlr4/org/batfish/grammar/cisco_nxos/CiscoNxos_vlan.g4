@@ -66,6 +66,7 @@ vlan_vlan
   (
     vv_null
     | vv_vn_segment
+    | vv_pvlan
   )*
 ;
 
@@ -84,4 +85,23 @@ vv_null
 vv_vn_segment
 :
   VN_SEGMENT vni_number NEWLINE
+;
+
+vv_pvlan
+:
+  PRIVATE_VLAN
+  (
+    vv_pvlan_mode
+    | vv_pvlan_association
+  )
+;
+
+vv_pvlan_mode
+:
+  private_vlan_mode NEWLINE
+;
+
+vv_pvlan_association
+:
+  ASSOCIATION vlan_id_range NEWLINE
 ;

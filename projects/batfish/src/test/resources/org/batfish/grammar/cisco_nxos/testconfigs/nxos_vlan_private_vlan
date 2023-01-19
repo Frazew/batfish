@@ -1,0 +1,26 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_vlan_private_vlan
+!
+
+
+vlan 10,11,20,21,30
+vlan 10
+  name PRIMARY-RANGE
+  private-vlan primary
+  private-vlan association 20,30,40
+vlan 11
+  name PRIMARY-SINGLE
+  private-vlan primary
+  private-vlan association 21
+vlan 20
+  name ISOLATED
+  private-vlan isolated
+vlan 21
+  name COMMUNITY
+  private-vlan community
+vlan 30
+  name ISOLATED2
+  private-vlan isolated
+
+

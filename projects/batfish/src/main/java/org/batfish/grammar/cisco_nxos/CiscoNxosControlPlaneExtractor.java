@@ -166,6 +166,7 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPF
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPF_REDISTRIBUTE_INSTANCE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPF_REDISTRIBUTE_ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.POLICY_MAP_CLASS;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.PRIVATE_VLAN_ASSOCIATION;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.RIP_AF4_DEFAULT_INFORMATION_ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.RIP_AF4_REDISTRIBUTE_INSTANCE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.RIP_AF4_REDISTRIBUTE_ROUTE_MAP;
@@ -744,6 +745,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vni_numberContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vrf_descriptionContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vrf_nameContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vrf_non_default_nameContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vv_pvlan_associationContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Vv_vn_segmentContext;
 import org.batfish.grammar.silent_syntax.SilentSyntaxCollection;
 import org.batfish.representation.cisco_nxos.ActionIpAccessListLine;
@@ -5942,6 +5944,11 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
     if (space == null) {
       return;
     }
+    int line = ctx.vlan_id_range().getStart().getLine();
+    space
+        .intStream()
+        .forEach(
+            i -> _c.referenceStructure(VLAN, Integer.toString(i), PRIVATE_VLAN_ASSOCIATION, line));
     todo(ctx);
   }
 
@@ -7044,6 +7051,15 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
     }
     Integer vni = vniOrError.get();
     _currentVlans.forEach(v -> v.setVni(vni));
+  }
+
+  @Override
+  public void exitVv_pvlan_association(Vv_pvlan_associationContext ctx) {
+    IntegerSpace space = toVlanIdRange(ctx, ctx.vlan_id_range());
+    if (space == null) {
+      return;
+    }
+    todo(ctx);
   }
 
   private @Nonnull Optional<Long> toBandwidthEigrp(

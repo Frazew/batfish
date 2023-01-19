@@ -210,6 +210,8 @@ ASSOCIATE: 'associate';
 
 ASSOCIATE_VRF: 'associate-vrf';
 
+ASSOCIATION: 'association';
+
 ATTRIBUTE_MAP
 :
   'attribute-map' -> pushMode ( M_Word )
@@ -1049,6 +1051,8 @@ ISIS
 ;
 
 ISOLATE: 'isolate';
+
+ISOLATED: 'isolated';
 
 JP_INTERVAL: 'jp-interval';
 

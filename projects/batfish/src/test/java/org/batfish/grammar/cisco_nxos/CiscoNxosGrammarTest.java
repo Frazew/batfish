@@ -8761,6 +8761,13 @@ public final class CiscoNxosGrammarTest {
   }
 
   @Test
+  public void testVlanPrivateVlanConversion() {
+    // @TODO check extraction
+    String hostname = "nxos_vlan_private_vlan";
+    assertThat(parseVendorConfig(hostname), notNullValue());
+  }
+
+  @Test
   public void testVrfConversion() throws IOException {
     String hostname = "nxos_vrf";
     Configuration c = parseConfig(hostname);

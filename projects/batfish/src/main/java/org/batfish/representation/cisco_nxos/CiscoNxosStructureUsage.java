@@ -129,6 +129,7 @@ public enum CiscoNxosStructureUsage implements StructureUsage {
   OSPFV3_TABLE_MAP("router ospfv3 address-family table-map"),
   OSPFV3_VRF("router ospfv3 vrf"),
   POLICY_MAP_CLASS("policy-map class"),
+  PRIVATE_VLAN_ASSOCIATION("private-vlan association"),
   RIP_AF4_DEFAULT_INFORMATION_ROUTE_MAP(
       "router rip address-family ipv4 default-information originate route-map"),
   RIP_AF4_REDISTRIBUTE_INSTANCE("router rip address-family ipv4 redistribute"),

@@ -339,6 +339,13 @@ policy_map_queuing_name
   WORD
 ;
 
+private_vlan_mode
+:
+  PRIMARY
+  | ISOLATED
+  | COMMUNITY
+;
+
 qos_group
 :
 // 0-7
