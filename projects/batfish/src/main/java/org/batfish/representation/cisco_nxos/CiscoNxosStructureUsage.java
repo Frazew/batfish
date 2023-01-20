@@ -59,6 +59,7 @@ public enum CiscoNxosStructureUsage implements StructureUsage {
   FLOW_EXPORTER_SOURCE("flow exporter source"),
   FLOW_MONITOR_EXPORTER("flow monitor exporter"),
   FLOW_MONITOR_RECORD("flow monitor record"),
+  INFRA_VLAN_ASSOCIATION("system nve infra-vlans"),
   INTERFACE_CHANNEL_GROUP("interface channel-group"),
   INTERFACE_HSRP_GROUP_TRACK("interface hsrp group track"),
   INTERFACE_IP_ACCESS_GROUP_IN("interface ip access-group in"),

@@ -94,6 +94,7 @@ statement
   | s_version
   | s_vdc
   | s_vlan
+  | s_vpc
   | s_vrf_context
   | s_xml
 ;
@@ -210,6 +211,29 @@ s_ip
     | ip_tacacs
     | ip_sla
   )
+;
+
+s_vpc
+:
+   NO? VPC null_rest_of_line
+   (
+      vpc_null
+   )*
+;
+
+vpc_null
+:
+   NO?
+   (
+      DELAY
+      | IP
+      | IPV6
+      | PEER_GATEWAY
+      | PEER_KEEPALIVE
+      | PEER_SWITCH
+      | ROLE
+      | SYSTEM_PRIORITY
+   ) null_rest_of_line
 ;
 
 ip_domain_name
@@ -540,7 +564,13 @@ s_system
     sys_default
     | sys_qos
     | sys_vlan
+    | sys_nve_infra_vlans
   )
+;
+
+sys_nve_infra_vlans
+:
+  NVE INFRA_VLANS infra_vlan = vlan_id_range NEWLINE
 ;
 
 sys_default

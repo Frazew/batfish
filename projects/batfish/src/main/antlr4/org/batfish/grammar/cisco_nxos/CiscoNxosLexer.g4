@@ -759,6 +759,8 @@ ESP: 'esp';
 
 ESTABLISHED: 'established';
 
+ETH: 'eth';
+
 ETHERNET
 :
   [Ee] [Tt] [Hh] [Ee] [Rr] [Nn] [Ee] [Tt]
@@ -1074,6 +1076,8 @@ INFORMATION_REPLY: 'information-reply';
 INFORMATION_REQUEST: 'information-request';
 
 INFORMS: 'informs';
+
+INFRA_VLANS: 'infra-vlans';
 
 INGRESS_REPLICATION: 'ingress-replication';
 
@@ -1813,7 +1817,11 @@ PEER
   'peer' -> pushMode ( M_Word )
 ;
 
+PEER_GATEWAY: 'peer-gateway';
+
 PEER_IP: 'peer-ip';
+
+PEER_KEEPALIVE: 'peer-keepalive';
 
 PEER_LINK: 'peer-link';
 
@@ -1826,6 +1834,8 @@ PEER_SESSION
 :
   'peer-session' -> pushMode ( M_Word )
 ;
+
+PEER_SWITCH: 'peer-switch';
 
 PEER_VTEP: 'peer-vtep';
 
@@ -2390,6 +2400,8 @@ SWITCHPORT: 'switchport';
 SYN: 'syn';
 
 SYNC: 'sync';
+
+SYNCHRONIZE: 'synchronize';
 
 SYSLOG: 'syslog';
 

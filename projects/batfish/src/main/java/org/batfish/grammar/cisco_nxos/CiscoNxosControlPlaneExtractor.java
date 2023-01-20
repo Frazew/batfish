@@ -106,6 +106,7 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.EIGR
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.FLOW_EXPORTER_SOURCE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.FLOW_MONITOR_EXPORTER;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.FLOW_MONITOR_RECORD;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INFRA_VLAN_ASSOCIATION;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_CHANNEL_GROUP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_ACCESS_GROUP_IN;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_ACCESS_GROUP_OUT;
@@ -721,6 +722,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Standard_communityContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Static_route_definitionContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Static_route_nameContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Subnet_maskContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Sys_nve_infra_vlansContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Sysds_shutdownContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Sysds_switchportContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Sysqosspt_network_qosContext;
@@ -8257,6 +8259,20 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
       String msg = String.format("Unrecognized Line: %d: %s", line, lineText);
       _w.redFlag(msg + " SUBSEQUENT LINES MAY NOT BE PROCESSED CORRECTLY");
     }
+  }
+
+  @Override
+  public void exitSys_nve_infra_vlans(Sys_nve_infra_vlansContext ctx) {
+    IntegerSpace vlans = toVlanIdRange(ctx, ctx.vlan_id_range());
+    if (vlans == null) {
+      return;
+    }
+    int line = ctx.vlan_id_range().getStart().getLine();
+    vlans
+        .intStream()
+        .forEach(
+            i -> _c.referenceStructure(VLAN, Integer.toString(i), INFRA_VLAN_ASSOCIATION, line));
+    todo(ctx);
   }
 
   @Override
