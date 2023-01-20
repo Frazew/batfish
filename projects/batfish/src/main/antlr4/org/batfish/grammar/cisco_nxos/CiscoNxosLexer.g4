@@ -185,6 +185,8 @@ ALLOWAS_IN: 'allowas-in';
 
 ALLOWED: 'allowed';
 
+ALLOW_STATIC_ARP_OUTSIDE_SUBNET: 'allow-static-arp-outside-subnet';
+
 ALTERNATE_ADDRESS: 'alternate-address';
 
 ALWAYS: 'always';
@@ -1291,6 +1293,8 @@ LOCAL_AS
 ;
 
 LOCAL_PREFERENCE: 'local-preference';
+
+LOCAL_PROXY_ARP: 'local-proxy-arp';
 
 LOCAL0: 'local0';
 

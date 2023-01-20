@@ -414,6 +414,7 @@ i_ip
     | i_ip_hello_interval
     | i_ip_hold_time
     | i_ip_igmp
+    | i_ip_local_proxy_arp
     | i_ip_null
     | i_ip_ospf
     | i_ip_passive_interface
@@ -552,6 +553,11 @@ i_ip_igmp
     iipi_access_group
     | iipi_null
   )
+;
+
+i_ip_local_proxy_arp
+:
+  LOCAL_PROXY_ARP NEWLINE
 ;
 
 iipi_access_group
