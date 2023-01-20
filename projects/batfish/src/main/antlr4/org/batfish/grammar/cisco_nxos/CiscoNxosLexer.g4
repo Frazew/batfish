@@ -1294,6 +1294,8 @@ LOCAL_AS
 
 LOCAL_PREFERENCE: 'local-preference';
 
+LOCAL_PROXY: 'local-proxy';
+
 LOCAL_PROXY_ARP: 'local-proxy-arp';
 
 LOCAL0: 'local0';
@@ -1490,6 +1492,8 @@ MGMT
 
 MIB: 'mib';
 
+MIN: 'min';
+
 MIN_LENGTH: 'min-length';
 
 MIN_LINKS: 'min-links';
@@ -1632,6 +1636,8 @@ NO: 'no';
 NO_ADVERTISE: 'no-advertise';
 
 NO_EXPORT: 'no-export';
+
+NO_HW_FLOODING: 'no-hw-flooding';
 
 NO_PREPEND: 'no-prepend';
 
@@ -1986,6 +1992,8 @@ RANDOM_DETECT: 'random-detect';
 RANGE: 'range';
 
 RATE: 'rate';
+
+RA_INTERVAL: 'ra-interval';
 
 RD: 'rd';
 
@@ -2645,6 +2653,8 @@ USE_IPV6ACL
 :
   'use-ipv6acl' -> pushMode ( M_Word )
 ;
+
+USE_LINK_LOCAL_ONLY: 'use-link-local-only';
 
 USE_VRF
 :

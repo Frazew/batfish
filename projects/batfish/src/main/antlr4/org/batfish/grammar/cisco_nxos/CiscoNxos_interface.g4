@@ -903,6 +903,7 @@ iip6_address
   (
     i_ipv6_address_concrete
     | i_ipv6_address_dhcp
+    | i_ipv6_address_use_link_local_only
   )
 ;
 
@@ -917,6 +918,11 @@ i_ipv6_address_concrete
 i_ipv6_address_dhcp
 :
   DHCP NEWLINE
+;
+
+i_ipv6_address_use_link_local_only
+:
+  USE_LINK_LOCAL_ONLY NEWLINE
 ;
 
 iip6_null
