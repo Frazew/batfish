@@ -273,6 +273,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3_dst_addressContext
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3_fragmentsContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3_protocol_specContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3_src_addressContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3_vlanContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3o_dscpContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3o_logContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Acllal3o_packet_lengthContext;
@@ -5316,6 +5317,13 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   @Override
   public void exitAcllal3o_ttl(Acllal3o_ttlContext ctx) {
     _currentLayer3OptionsBuilder.setTtl(toInteger(ctx.num));
+  }
+
+  @Override
+  public void exitAcllal3_vlan(Acllal3_vlanContext ctx) {
+    _currentActionIpAccessListLineBuilder.setVlanId(toVlanId(ctx, ctx.vlan_id()));
+    todo(ctx);
+    _currentActionIpAccessListLineUnusable = true;
   }
 
   @Override

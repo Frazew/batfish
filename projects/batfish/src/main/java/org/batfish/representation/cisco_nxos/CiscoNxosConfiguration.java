@@ -2557,6 +2557,11 @@ public final class CiscoNxosConfiguration extends VendorConfiguration {
     }
     hs.setSrcIps(toIpSpace(actionIpAccessListLine.getSrcAddressSpec()));
     hs.setDstIps(toIpSpace(actionIpAccessListLine.getDstAddressSpec()));
+    if (actionIpAccessListLine.getVlanId() != null) {
+      // TODO: support vlan ID matching? Likely hard: it seems Cisco-specific and it's a weird mix
+      // of L2/L3 ACL
+      return AclLineMatchExprs.FALSE;
+    }
     Layer3Options l3Options = actionIpAccessListLine.getL3Options();
     if (l3Options.getDscp() != null) {
       hs.setDscps(ImmutableList.of(l3Options.getDscp()));

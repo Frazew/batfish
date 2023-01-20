@@ -3466,7 +3466,8 @@ public final class CiscoNxosGrammarTest {
             "acl_udp_destination_ports_named",
             "acl_udp_source_ports",
             "acl_udp_vxlan",
-            "acl_l4_fragments_semantics"));
+            "acl_l4_fragments_semantics",
+            "acl_vlan"));
     {
       org.batfish.datamodel.IpAccessList acl = c.getIpAccessLists().get("acl_global_options");
       assertThat(acl.getLines(), empty());
@@ -3866,6 +3867,7 @@ public final class CiscoNxosGrammarTest {
               toNonIfBDD(
                   AclLineMatchExprs.and(matchSrc(Ip.parse("192.0.2.1")), matchIpProtocol(5)))));
     }
+    // TODO: support vlan matching?
   }
 
   @Test
@@ -3900,7 +3902,8 @@ public final class CiscoNxosGrammarTest {
             "acl_udp_destination_ports_named",
             "acl_udp_source_ports",
             "acl_udp_vxlan",
-            "acl_l4_fragments_semantics"));
+            "acl_l4_fragments_semantics",
+            "acl_vlan"));
     {
       IpAccessList acl = vc.getIpAccessLists().get("acl_global_options");
       assertThat(acl.getFragmentsBehavior(), equalTo(FragmentsBehavior.PERMIT_ALL));
@@ -4458,6 +4461,7 @@ public final class CiscoNxosGrammarTest {
       assertThat(line.getProtocol(), equalTo(IpProtocol.fromNumber(5)));
       assertTrue(line.getFragments());
     }
+    // TODO: support vlan matching?
   }
 
   @Test

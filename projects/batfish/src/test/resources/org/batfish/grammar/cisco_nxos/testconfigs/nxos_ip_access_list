@@ -338,3 +338,5 @@ ip access-list acl_l4_fragments_semantics
   permit 4 host 192.0.2.1 any fragments
   deny 5 host 192.0.2.1 any fragments
   
+ip access-list acl_vlan
+  permit ip any any vlan 3

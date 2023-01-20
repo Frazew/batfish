@@ -22,6 +22,7 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
     private @Nullable IpProtocol _protocol;
     private @Nullable IpAddressSpec _srcAddressSpec;
     private @Nullable String _text;
+    private @Nullable Integer _vlanId;
 
     private Builder() {}
 
@@ -42,7 +43,8 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
           _log,
           _protocol,
           _srcAddressSpec,
-          _text);
+          _text,
+          _vlanId);
     }
 
     public @Nonnull Builder setAction(LineAction action) {
@@ -94,6 +96,11 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
       _text = text;
       return this;
     }
+
+    public @Nonnull Builder setVlanId(@Nullable Integer vlanId) {
+      _vlanId = vlanId;
+      return this;
+    }
   }
 
   public static @Nonnull Builder builder() {
@@ -108,6 +115,7 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
   private final boolean _log;
   private final @Nullable IpProtocol _protocol;
   private final @Nonnull IpAddressSpec _srcAddressSpec;
+  private @Nullable Integer _vlanId;
 
   private ActionIpAccessListLine(
       long line,
@@ -119,7 +127,8 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
       boolean log,
       IpProtocol protocol,
       IpAddressSpec srcAddressSpec,
-      String text) {
+      String text,
+      Integer vlanId) {
     super(line, text);
     _action = action;
     _dstAddressSpec = dstAddressSpec;
@@ -129,6 +138,7 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
     _log = log;
     _protocol = protocol;
     _srcAddressSpec = srcAddressSpec;
+    _vlanId = vlanId;
   }
 
   @Override
@@ -169,5 +179,9 @@ public final class ActionIpAccessListLine extends IpAccessListLine {
 
   public @Nonnull IpAddressSpec getSrcAddressSpec() {
     return _srcAddressSpec;
+  }
+
+  public @Nullable Integer getVlanId() {
+    return _vlanId;
   }
 }

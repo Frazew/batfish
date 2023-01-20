@@ -63,6 +63,7 @@ aclla_l3
   (
     acllal3_fragments
     | acllal3_option
+    | acllal3_vlan
   )* NEWLINE
 ;
 
@@ -121,6 +122,11 @@ acllal3_option
 acllal3o_dscp
 :
   DSCP dscp = dscp_spec
+;
+
+acllal3_vlan
+:
+  VLAN vlan_matched = vlan_id
 ;
 
 dscp_spec
