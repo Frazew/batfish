@@ -113,6 +113,7 @@ public enum CiscoNxosStructureUsage implements StructureUsage {
   NTP_SOURCE_INTERFACE("ntp source-interface"),
   NVE_SELF_REFERENCE("interface nve"),
   NVE_SOURCE_INTERFACE("interface nve source-interface"),
+  NXAPI_USE_VRF("nxapi use-vrf"),
   OSPF_AREA_FILTER_LIST_IN("router ospf area filter-list in"),
   OSPF_AREA_FILTER_LIST_OUT("router ospf area filter-list out"),
   OSPF_AREA_NSSA_ROUTE_MAP("router ospf area nssa route-map"),

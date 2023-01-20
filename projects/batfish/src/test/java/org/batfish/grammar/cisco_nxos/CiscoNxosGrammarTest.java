@@ -5499,6 +5499,12 @@ public final class CiscoNxosGrammarTest {
   }
 
   @Test
+  public void testNxapi() throws IOException {
+    Configuration c = parseConfig("nxos_nxapi");
+    assertThat(c, notNullValue());
+  }
+
+  @Test
   public void testObjectGroupIpAddressExtraction() {
     String hostname = "nxos_object_group_ip_address";
     CiscoNxosConfiguration vc = parseVendorConfig(hostname);

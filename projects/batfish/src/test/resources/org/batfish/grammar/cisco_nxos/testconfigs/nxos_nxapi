@@ -1,0 +1,6 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_nxapi
+!
+nxapi http port 80
+nxapi use-vrf default

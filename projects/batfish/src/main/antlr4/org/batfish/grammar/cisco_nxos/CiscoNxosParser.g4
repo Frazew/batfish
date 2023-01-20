@@ -25,6 +25,7 @@ import
   CiscoNxos_mac,
   CiscoNxos_monitor,
   CiscoNxos_ntp,
+  CiscoNxos_nxapi,
   CiscoNxos_object_group,
   CiscoNxos_ospf,
   CiscoNxos_ospfv3,
@@ -77,6 +78,7 @@ statement
   | s_ntp
   | s_null
   | s_nv
+  | s_nxapi
   | s_object_group
   | s_policy_map
   | s_rmon

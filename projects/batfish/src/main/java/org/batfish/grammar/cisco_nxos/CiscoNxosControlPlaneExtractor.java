@@ -156,6 +156,7 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.NTP_
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.NTP_SOURCE_INTERFACE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.NVE_SELF_REFERENCE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.NVE_SOURCE_INTERFACE;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.NXAPI_USE_VRF;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPFV3_AREA_FILTER_LIST_ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPFV3_DEFAULT_INFORMATION_ORIGINATE_ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.OSPFV3_NSSA_DEFAULT_INFORMATION_ORIGINATE_ROUTE_MAP;
@@ -500,6 +501,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Nvm_ingress_replicationCon
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Nvm_mcast_groupContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Nvm_peer_ipContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Nvm_suppress_arpContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Nxapi_use_vrfContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Object_group_nameContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Ogip_addressContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Ogip_portContext;
@@ -2868,6 +2870,15 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
     if (ctx.ASSOCIATE_VRF() != null) {
       _currentNveVnis.forEach(memberVni -> memberVni.setAssociateVrf(true));
     }
+  }
+
+  @Override
+  public void exitNxapi_use_vrf(Nxapi_use_vrfContext ctx) {
+    Optional<String> vrf = toString(ctx, ctx.vrf);
+    if (!vrf.isPresent()) {
+      return;
+    }
+    _c.referenceStructure(VRF, vrf.get(), NXAPI_USE_VRF, ctx.getStart().getLine());
   }
 
   @Override

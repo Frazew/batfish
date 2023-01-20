@@ -950,12 +950,27 @@ HSRP: 'hsrp';
 
 HTTP
 :
-  'http' -> pushMode(M_Words)
+  'http'
+  {
+    if (lastTokenType() != NXAPI || lastTokenType() == -1) {
+      pushMode(M_Words);
+    }
+  }
 ;
 
 HTTP_METHOD: 'http-method';
 
 HTTP_SERVER: 'http-server';
+
+HTTPS
+:
+  'https'
+  {
+    if (lastTokenType() != NXAPI || lastTokenType() == -1) {
+      pushMode(M_Words);
+    }
+  }
+;
 
 HW_HASH: 'hw-hash';
 
