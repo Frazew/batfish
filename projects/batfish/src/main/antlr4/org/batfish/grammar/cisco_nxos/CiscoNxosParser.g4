@@ -60,6 +60,7 @@ statement
   | s_class_map
   | s_control_plane
   | s_crypto
+  | s_event_manager
   | s_evpn
   | s_fabric
   | s_fex
@@ -673,3 +674,20 @@ s_version
 ;
 
 s_xml: XML SERVER VALIDATE ALL NEWLINE;
+
+s_event_manager
+:
+    EVENT MANAGER null_rest_of_line
+    event_null*
+;
+
+event_null
+:
+   NO?
+   (
+      ACTION
+      | EVENT
+      | TAG
+      | DESCRIPTION
+   ) null_rest_of_line
+;

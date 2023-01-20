@@ -85,7 +85,15 @@ ACL_TCP: 'acl_tcp';
 
 ACL_UDP: 'acl_udp';
 
-ACTION: 'action';
+ACTION
+:
+  'action'
+  {
+    if (lastTokenType() == NEWLINE || lastTokenType() == -1) {
+      pushMode(M_Word);
+    }
+  }
+;
 
 ACTIVE: 'active';
 
@@ -183,11 +191,36 @@ ALWAYS: 'always';
 
 ALWAYS_COMPARE_MED: 'always-compare-med';
 
+AND
+:
+  'and'
+  {
+    if (secondToLastTokenType() == TAG || secondToLastTokenType() == OR || secondToLastTokenType() == ANDNOT) {
+      pushMode(M_Word);
+    }
+  }
+;
+
+ANDNOT
+:
+  'andnot'
+  {
+    if (secondToLastTokenType() == TAG || secondToLastTokenType() == OR || secondToLastTokenType() == AND) {
+      pushMode(M_Word);
+    }
+  }
+;
+
 ANY: 'any';
 ANYCAST_GATEWAY: 'anycast-gateway';
 ANYCAST_GATEWAY_MAC: 'anycast-gateway-mac';
 
 AMT: 'amt';
+
+APPLET
+:
+  'applet' -> pushMode ( M_Word )
+;
 
 AREA: 'area';
 
@@ -365,7 +398,15 @@ CLASS_MAP
 
 CLEAR: 'clear';
 
-CLI: 'cli';
+CLI
+:
+  'cli'
+  {
+    if (secondToLastTokenType() == ACTION) {
+      pushMode(M_Remark);
+    }
+  }
+;
 
 CLIENT_IDENTITY: 'client-identity';
 
@@ -465,6 +506,8 @@ COS: 'cos';
 COST: 'cost';
 
 COST_COMMUNITY: 'cost-community';
+
+COUNT: 'count';
 
 COUNTER: 'counter';
 
@@ -887,6 +930,8 @@ GROUP_TIMEOUT: 'group-timeout';
 GT: 'gt';
 
 GUARD: 'guard';
+
+HAPPENS: 'happens';
 
 HARDWARE: 'hardware';
 
@@ -1338,6 +1383,8 @@ MANAGEMENT: 'management';
 
 MANAGEMENT_ADDRESS: 'management-address';
 
+MANAGER: 'manager';
+
 MAP: 'map';
 
 MAPPING: 'mapping';
@@ -1657,6 +1704,16 @@ OPTION: 'option';
 
 OPTION_MISSING: 'option-missing';
 
+OR
+:
+  'or'
+  {
+    if (secondToLastTokenType() == TAG || secondToLastTokenType() == AND || secondToLastTokenType() == ANDNOT) {
+      pushMode(M_Word);
+    }
+  }
+;
+
 ORIGIN: 'origin';
 
 ORIGINATE: 'originate';
@@ -1699,7 +1756,16 @@ OUTPUT
 
 OVERLAY: 'overlay';
 
-OVERRIDE: 'override';
+OVERRIDE
+:
+  'override'
+  // All other instances are followed by keywords
+  {
+    if (secondToLastTokenType() == APPLET) {
+      pushMode(M_Word);
+    }
+  }
+;
 
 PACKET: 'packet';
 
@@ -1790,6 +1856,8 @@ POINT_TO_POINT: 'point-to-point';
 POLICE: 'police';
 
 POLICY: 'policy';
+
+POLICY_DEFAULT: 'policy-default';
 
 POLICY_MAP
 :
@@ -2347,7 +2415,15 @@ TACACSP
   }
 ;
 
-TAG: 'tag';
+TAG
+:
+  'tag'
+  {
+    if (lastTokenType() == NEWLINE || lastTokenType() == -1) {
+      pushMode(M_Word);
+    }
+  }
+;
 
 TAIL_DROP: 'tail-drop';
 

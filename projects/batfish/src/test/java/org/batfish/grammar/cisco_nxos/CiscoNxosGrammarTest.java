@@ -2251,6 +2251,11 @@ public final class CiscoNxosGrammarTest {
   }
 
   @Test
+  public void testEventManagerParsing() throws IOException {
+    assertThat(parseConfig("nxos_event_manager"), notNullValue());
+  }
+
+  @Test
   public void testFeatureParsing() {
     // TODO: make into extraction test
     assertThat(parseVendorConfig("nxos_feature"), notNullValue());

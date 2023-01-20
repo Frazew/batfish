@@ -1,0 +1,16 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_event_manager
+!
+
+event manager applet appletname override __internalname
+  description "test-description"
+  event policy-default count 1 time 1800
+  event storm-control
+  event none
+
+event manager applet monitorShutdown
+  description "Monitors interface shutdown."
+  event cli match "conf t ; interface * ; shutdown"
+  tag one or two happens 1 in 10000
+  action 1.0 cli show interface e 3/1
