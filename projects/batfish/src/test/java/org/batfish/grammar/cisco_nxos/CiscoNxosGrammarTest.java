@@ -6880,6 +6880,8 @@ public final class CiscoNxosGrammarTest {
             computeRoutingPolicyName("match_tag", 10),
             "match_vlan",
             computeRoutingPolicyName("match_vlan", 10),
+            "match_evpn_route_types",
+            computeRoutingPolicyName("match_evpn_route_types", 10),
             "set_as_path_prepend_last_as",
             computeRoutingPolicyName("set_as_path_prepend_last_as", 10),
             "set_as_path_prepend_literal_as",
@@ -7437,6 +7439,7 @@ public final class CiscoNxosGrammarTest {
             "match_source_protocol_static",
             "match_tag",
             "match_vlan",
+            "match_evpn_route_types",
             "set_as_path_prepend_last_as",
             "set_as_path_prepend_literal_as",
             "set_comm_list_expanded",
@@ -7699,6 +7702,17 @@ public final class CiscoNxosGrammarTest {
       RouteMapMatchVlan match = entry.getMatchVlan();
       assertThat(entry.getMatches().collect(onlyElement()), equalTo(match));
       assertThat(match.getVlans(), equalTo(IntegerSpace.builder().including(1, 3, 4).build()));
+    }
+    {
+      RouteMap rm = vc.getRouteMaps().get("match_evpn_route_types");
+      assertThat(rm.getEntries().keySet(), contains(10));
+      RouteMapEntry entry = getOnlyElement(rm.getEntries().values());
+      assertThat(entry.getAction(), equalTo(LineAction.PERMIT));
+      assertThat(entry.getSequence(), equalTo(10));
+      // Make sure warnings were filed because we can't match EVPN route types for now
+      assertThat(
+          vc.getWarnings(),
+          hasParseWarning(hasComment("match evpn route-type is not currently supported")));
     }
     {
       RouteMap rm = vc.getRouteMaps().get("set_as_path_prepend_last_as");

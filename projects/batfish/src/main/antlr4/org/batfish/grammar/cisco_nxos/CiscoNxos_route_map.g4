@@ -59,6 +59,7 @@ rm_match
     | rmm_source_protocol
     | rmm_tag
     | rmm_vlan
+    | rmm_evpn
   )
 ;
 
@@ -176,6 +177,25 @@ rmm_tag
 rmm_vlan
 :
   VLAN range = unreserved_vlan_id_range NEWLINE
+;
+
+rmm_evpn
+:
+  EVPN
+  (
+    rmm_evpn_route_type
+  )
+;
+
+rmm_evpn_route_type
+:
+  ROUTE_TYPE
+  (
+    type_digit = UINT8
+    | type_2_mac_only = MAC_ONLY_2
+    | type_2_ip_only = MAC_IP_2
+  )+
+  NEWLINE
 ;
 
 rm_set

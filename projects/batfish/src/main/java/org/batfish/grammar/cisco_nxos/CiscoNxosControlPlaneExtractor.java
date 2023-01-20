@@ -617,6 +617,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rm_continueContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_as_numberContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_as_pathContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_communityContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_evpn_route_typeContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_interfaceContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_metricContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Rmm_route_typeContext;
@@ -6568,6 +6569,11 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
           names.add(name);
         });
     _currentRouteMapEntry.setMatchCommunity(new RouteMapMatchCommunity(names.build()));
+  }
+
+  @Override
+  public void exitRmm_evpn_route_type(Rmm_evpn_route_typeContext ctx) {
+    warn(ctx, "match evpn route-type is not currently supported");
   }
 
   @Override

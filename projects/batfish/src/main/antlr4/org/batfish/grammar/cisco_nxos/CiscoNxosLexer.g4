@@ -1307,6 +1307,10 @@ MAC: 'mac';
 
 MAC_ADDRESS: 'mac-address';
 
+MAC_IP_2: '2-mac-ip';
+
+MAC_ONLY_2: '2-mac-only';
+
 MAIL: 'mail';
 
 MAINTENANCE: 'maintenance';
