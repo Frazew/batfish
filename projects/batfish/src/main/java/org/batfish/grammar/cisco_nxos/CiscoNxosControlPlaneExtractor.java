@@ -50,6 +50,7 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.ROUTE
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.ROUTER_RIP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.ROUTE_MAP_ENTRY;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.SNMP_CONTEXT;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.VLAN;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureType.VRF;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.AAA_GROUP_SERVER_RADIUS_SOURCE_INTERFACE;
@@ -188,10 +189,11 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.ROUT
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.ROUTE_MAP_MATCH_IPV6_ADDRESS_PREFIX_LIST;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.ROUTE_MAP_MATCH_IP_ADDRESS;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.ROUTE_MAP_MATCH_IP_ADDRESS_PREFIX_LIST;
-import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_COMMUNITY_USE_ACL;
-import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_COMMUNITY_USE_IPV4ACL;
-import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_COMMUNITY_USE_IPV6ACL;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_CONTEXT_VRF;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_SOURCE_INTERFACE;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_USE_ACL;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_USE_IPV4ACL;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SNMP_SERVER_USE_IPV6ACL;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SYSQOS_NETWORK_QOS;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SYSQOS_QOS;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.SYSQOS_QUEUING;
@@ -698,11 +700,14 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.S_trackContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.S_vdcContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.S_vrf_contextContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmp_communityContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmp_contextContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_communityContext;
-import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_community_use_aclContext;
-import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_community_use_ipv4aclContext;
-import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_community_use_ipv6aclContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_contextContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_hostContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_mib_community_mapContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_use_aclContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_use_ipv4aclContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmps_use_ipv6aclContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmpssi_informsContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Snmpssi_trapsContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Standard_communityContext;
@@ -1036,6 +1041,8 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   private static final IntegerSpace RIP_PROCESS_ID_LENGTH_RANGE =
       IntegerSpace.of(Range.closed(1, 20));
   private static final IntegerSpace SNMP_COMMUNITY_LENGTH_RANGE =
+      IntegerSpace.of(Range.closed(1, 32));
+  private static final IntegerSpace SNMP_CONTEXT_NAME_LENGTH_RANGE =
       IntegerSpace.of(Range.closed(1, 32));
 
   @VisibleForTesting
@@ -6904,45 +6911,59 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   }
 
   @Override
-  public void exitSnmps_community_use_acl(Snmps_community_use_aclContext ctx) {
+  public void exitSnmps_use_acl(Snmps_use_aclContext ctx) {
     Optional<String> name = toString(ctx, ctx.name);
     if (!name.isPresent()) {
       return;
     }
-    _currentSnmpCommunity.setAclName(name.get());
+    if (_currentSnmpCommunity != null) {
+      _currentSnmpCommunity.setAclName(name.get());
+    }
     _c.referenceStructure(
         IP_ACCESS_LIST_ABSTRACT_REF,
         name.get(),
-        SNMP_SERVER_COMMUNITY_USE_ACL,
+        SNMP_SERVER_USE_ACL,
         ctx.name.getStart().getLine());
   }
 
   @Override
-  public void exitSnmps_community_use_ipv4acl(Snmps_community_use_ipv4aclContext ctx) {
+  public void exitSnmps_use_ipv4acl(Snmps_use_ipv4aclContext ctx) {
     Optional<String> name = toString(ctx, ctx.name);
     if (!name.isPresent()) {
       return;
     }
-    _currentSnmpCommunity.setAclNameV4(name.get());
+    if (_currentSnmpCommunity != null) {
+      _currentSnmpCommunity.setAclNameV4(name.get());
+    }
     _c.referenceStructure(
-        IP_ACCESS_LIST,
-        name.get(),
-        SNMP_SERVER_COMMUNITY_USE_IPV4ACL,
-        ctx.name.getStart().getLine());
+        IP_ACCESS_LIST, name.get(), SNMP_SERVER_USE_IPV4ACL, ctx.name.getStart().getLine());
   }
 
   @Override
-  public void exitSnmps_community_use_ipv6acl(Snmps_community_use_ipv6aclContext ctx) {
+  public void exitSnmps_use_ipv6acl(Snmps_use_ipv6aclContext ctx) {
     Optional<String> name = toString(ctx, ctx.name);
     if (!name.isPresent()) {
       return;
     }
-    _currentSnmpCommunity.setAclNameV6(name.get());
+    if (_currentSnmpCommunity != null) {
+      _currentSnmpCommunity.setAclNameV6(name.get());
+    }
     _c.referenceStructure(
-        IPV6_ACCESS_LIST,
-        name.get(),
-        SNMP_SERVER_COMMUNITY_USE_IPV6ACL,
-        ctx.name.getStart().getLine());
+        IPV6_ACCESS_LIST, name.get(), SNMP_SERVER_USE_IPV6ACL, ctx.name.getStart().getLine());
+  }
+
+  @Override
+  public void exitSnmps_context(Snmps_contextContext ctx) {
+    Optional<String> name = toString(ctx, ctx.snmp_context());
+    if (!name.isPresent()) {
+      return;
+    }
+    _c.defineStructure(SNMP_CONTEXT, name.get(), ctx);
+    Optional<String> vrf = toString(ctx, ctx.vrf_name());
+    vrf.ifPresent(
+        s ->
+            _c.referenceStructure(
+                SNMP_CONTEXT, s, SNMP_SERVER_CONTEXT_VRF, ctx.vrf.getStart().getLine()));
   }
 
   @Override
@@ -6954,6 +6975,15 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   @Override
   public void exitSnmps_host(Snmps_hostContext ctx) {
     _currentSnmpServer = null;
+  }
+
+  @Override
+  public void exitSnmps_mib_community_map(Snmps_mib_community_mapContext ctx) {
+    Optional<String> community = toString(ctx, ctx.community);
+    if (!community.isPresent()) {
+      return;
+    }
+    todo(ctx);
   }
 
   @Override
@@ -8047,6 +8077,12 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
       ParserRuleContext messageCtx, Snmp_communityContext ctx) {
     return toStringWithLengthInSpace(
         messageCtx, ctx, SNMP_COMMUNITY_LENGTH_RANGE, "SNMP community");
+  }
+
+  private @Nonnull Optional<String> toString(
+      ParserRuleContext messageCtx, Snmp_contextContext ctx) {
+    return toStringWithLengthInSpace(
+        messageCtx, ctx, SNMP_CONTEXT_NAME_LENGTH_RANGE, "SNMP context");
   }
 
   private @Nullable String toString(ParserRuleContext messageCtx, Static_route_nameContext ctx) {

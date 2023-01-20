@@ -7,6 +7,7 @@ options {
 tokens {
   BANNER_BODY,
   BANNER_DELIMITER,
+  ENGINE_ID_LITERAL,
   HSRP_VERSION_1,
   HSRP_VERSION_2,
   MAC_ADDRESS_LITERAL,
@@ -407,6 +408,10 @@ COMM_LIST
 
 COMMUNITY_LIST: 'community-list';
 
+COMMUNITY_MAP:
+  'community-map' -> pushMode( M_Word )
+;
+
 COMPARE_ROUTERID: 'compare-routerid';
 
 CONFIG: 'config';
@@ -688,6 +693,8 @@ ENFORCE_BGP_MDT_SAFI: 'enforce-bgp-mdt-safi';
 
 ENFORCE_FIRST_AS: 'enforce-first-as';
 
+ENGINE_ID: 'engineID';
+
 ENTRIES: 'entries';
 
 EQ: 'eq';
@@ -966,6 +973,10 @@ ID: 'id';
 IDENT: 'ident';
 
 IDENTIFIER: 'identifier';
+
+IFALIAS: 'ifalias';
+
+IFMIB: 'ifmib';
 
 IGMP: 'igmp';
 
@@ -1390,6 +1401,8 @@ MGMT
   [Mm] [Gg] [Mm] [Tt]
 ;
 
+MIB: 'mib';
+
 MIN_LENGTH: 'min-length';
 
 MIN_LINKS: 'min-links';
@@ -1597,6 +1610,8 @@ OBJECT_GROUP: 'object-group';
 OBJSTORE: 'objstore';
 
 OFF: 'off';
+
+OID: 'oid';
 
 ON: 'on';
 
@@ -1878,6 +1893,8 @@ REACTION_CONFIGURATION
 REACTION_TRIGGER: 'reaction-trigger';
 
 READ: 'read';
+
+READ_WRITE: 'read-write';
 
 REASSEMBLY_TIMEOUT: 'reassembly-timeout';
 
@@ -2653,6 +2670,11 @@ DOUBLE_QUOTE
   '"' -> pushMode ( M_DoubleQuote )
 ;
 
+ENGINE_ID_LITERAL
+:
+  F_EngineId
+;
+
 FORWARD_SLASH
 :
   '/'
@@ -2729,6 +2751,17 @@ fragment
 F_Digit
 :
   [0-9]
+;
+
+fragment
+F_EngineId
+:
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit ':'
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit ':'
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit ':'
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit ':'
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit ':'
+  F_HexDigit F_HexDigit ':' F_HexDigit F_HexDigit
 ;
 
 fragment
@@ -3678,6 +3711,21 @@ mode M_SnmpUserGroup;
 M_SnmpUserGroup_AUTH
 :
   'auth' -> type ( AUTH ) , popMode
+;
+
+M_SnmpUserGroup_USE_ACL
+:
+  'use-acl' -> type ( USE_ACL ) , mode ( M_Word )
+;
+
+M_SnmpUserGroup_USEIPV4_ACL
+:
+  'use-ipv4acl' -> type ( USE_IPV4ACL ) , mode ( M_Word )
+;
+
+M_SnmpUserGroup_USEIPV6_ACL
+:
+  'use-ipv6acl' -> type ( USE_IPV6ACL ) , mode ( M_Word )
 ;
 
 M_SnmpUserGroup_WORD

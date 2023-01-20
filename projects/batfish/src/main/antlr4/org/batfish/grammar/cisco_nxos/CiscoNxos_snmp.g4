@@ -14,9 +14,12 @@ s_snmp_server
     | snmps_contact
     | snmps_location
     | snmps_enable
+    | snmps_engineid
     | snmps_host
     | snmps_source_interface
     | snmps_user
+    | snmps_context
+    | snmps_mib
   )
 ;
 
@@ -25,9 +28,10 @@ snmps_community
   COMMUNITY community = snmp_community
   (
     snmps_community_group
-    | snmps_community_use_acl
-    | snmps_community_use_ipv4acl
-    | snmps_community_use_ipv6acl
+    | snmps_use_acl
+    | snmps_use_ipv4acl_only
+    | snmps_use_ipv6acl_only
+    | snmps_use_ipv4acl_ipv6acl
   )
 ;
 
@@ -37,24 +41,16 @@ snmp_community
   WORD
 ;
 
+snmp_context
+:
+// 1-32 characters
+  WORD
+;
+
+
 snmps_community_group
 :
   GROUP name = group_name NEWLINE
-;
-
-snmps_community_use_acl
-:
-  USE_ACL name = ip_access_list_name NEWLINE
-;
-
-snmps_community_use_ipv4acl
-:
-  USE_IPV4ACL name = ip_access_list_name NEWLINE
-;
-
-snmps_community_use_ipv6acl
-:
-  USE_IPV6ACL name = ip_access_list_name NEWLINE
 ;
 
 snmps_contact
@@ -70,6 +66,11 @@ snmps_location
 snmps_enable
 :
   ENABLE TRAPS null_rest_of_line
+;
+
+snmps_engineid
+:
+  ENGINE_ID LOCAL engine_id = engine_id_literal NEWLINE
 ;
 
 snmps_host
@@ -133,7 +134,60 @@ snmpssi_traps
 
 snmps_user
 :
-  USER user = user_name group = group_name? snmpsu_auth
+  USER user = user_name group = group_name?
+  (
+    snmpsu_auth
+    | snmps_use_acl
+    | snmps_use_ipv4acl_only
+    | snmps_use_ipv6acl_only
+    | snmps_use_ipv4acl_ipv6acl
+  )
+;
+
+snmps_use_acl
+:
+  USE_ACL name = ip_access_list_name NEWLINE
+;
+
+snmps_use_ipv4acl
+:
+  USE_IPV4ACL name = ip_access_list_name
+;
+
+snmps_use_ipv4acl_only
+:
+  snmps_use_ipv4acl NEWLINE
+;
+
+snmps_use_ipv6acl
+:
+  USE_IPV6ACL name = ip_access_list_name
+;
+
+snmps_use_ipv6acl_only
+:
+  snmps_use_ipv6acl NEWLINE
+;
+
+snmps_use_ipv4acl_ipv6acl
+:
+  snmps_use_ipv4acl snmps_use_ipv6acl NEWLINE
+;
+
+snmps_context
+:
+  CONTEXT context = snmp_context VRF vrf = vrf_name NEWLINE
+;
+
+snmps_mib
+:
+  MIB snmps_mib_community_map
+
+;
+
+snmps_mib_community_map
+:
+  COMMUNITY_MAP community = snmp_community CONTEXT context = snmp_context NEWLINE
 ;
 
 snmpsu_auth

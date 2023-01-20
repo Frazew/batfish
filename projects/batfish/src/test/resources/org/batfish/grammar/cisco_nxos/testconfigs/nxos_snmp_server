@@ -7,12 +7,18 @@ ip access-list snmp_acl4
   20 permit udp 1.2.3.0/24 any eq snmp
   30 permit udp 2.0.0.0/8 any eq snmp
 !
+vrf context test-vrf
 snmp-server community SECRETcommunity1 group network-operator
+
 !
 snmp-server community SECRETcommunity2 group network-operator
 snmp-server community SECRETcommunity2 use-acl snmp_acl1
 snmp-server community SECRETcommunity2 use-ipv4acl snmp_acl4
 snmp-server community SECRETcommunity2 use-ipv6acl snmp_acl6
+snmp-server community SECRETcommunity2 use-ipv4acl snmp_acl4 use-ipv6acl snmp_acl6
+
+snmp-server context test-context vrf test-vrf
+snmp-server mib community-map SECRETcommunity1 context test-context
 
 snmp-server contact Give us a call at 867-5309
 

@@ -87,6 +87,11 @@ double_quoted_string
   DOUBLE_QUOTE text = quoted_text? DOUBLE_QUOTE
 ;
 
+engine_id_literal
+:
+  ENGINE_ID_LITERAL
+;
+
 fex_id
 :
 // 101-199
