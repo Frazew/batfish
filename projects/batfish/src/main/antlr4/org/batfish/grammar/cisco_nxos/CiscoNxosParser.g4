@@ -360,6 +360,7 @@ s_null
     | SPANNING_TREE
     | USERNAME
     | USERPASSPHRASE
+    | HARDWARE
   ) null_rest_of_line
 ;
 

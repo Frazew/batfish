@@ -1,0 +1,8 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_hardware
+!
+
+hardware access-list tcam region test-region 0
+hardware access-list tcam region test-region2 256
+hardware access-list tcam label test-region3 6

@@ -2263,6 +2263,12 @@ public final class CiscoNxosGrammarTest {
   }
 
   @Test
+  public void testHardwareExtraction() {
+    String hostname = "nxos_hardware";
+    assertThat(parseVendorConfig(hostname), notNullValue());
+  }
+
+  @Test
   public void testHumanName() throws IOException {
     Configuration c = parseConfig("nxos_hostname");
     assertThat(c.getHumanName(), equalTo("NXOS_hostname"));

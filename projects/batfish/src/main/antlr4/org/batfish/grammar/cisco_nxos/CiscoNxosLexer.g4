@@ -51,7 +51,12 @@ ACCESS_GROUP
 
 ACCESS_LIST
 :
-  'access-list' -> pushMode ( M_Word )
+  'access-list'
+  {
+    if (lastTokenType() != HARDWARE) {
+      pushMode(M_Word);
+    }
+  }
 ;
 
 ACCESS_MAP: 'access-map';
@@ -1896,6 +1901,15 @@ REFERENCE_BANDWIDTH: 'reference-bandwidth';
 
 REFLECTION: 'reflection';
 
+REGION:
+  'region'
+  {
+    if (lastTokenType() == TCAM) {
+      pushMode(M_Word);
+    }
+  }
+;
+
 RELAY: 'relay';
 
 RELOAD: 'reload';
@@ -2276,6 +2290,8 @@ TAG: 'tag';
 TAIL_DROP: 'tail-drop';
 
 TALK: 'talk';
+
+TCAM: 'tcam';
 
 TCP: 'tcp';
 
