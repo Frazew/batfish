@@ -31,6 +31,7 @@ ro_common
   | ro_passive_interface
   | ro_redistribute
   | ro_router_id
+  | ro_shutdown
   | ro_summary_address
   | ro_timers
 ;
@@ -239,6 +240,11 @@ ror_redistribute_route_map
 ro_router_id
 :
   ROUTER_ID id = ip_address NEWLINE
+;
+
+ro_shutdown
+:
+  SHUTDOWN NEWLINE
 ;
 
 ro_summary_address
