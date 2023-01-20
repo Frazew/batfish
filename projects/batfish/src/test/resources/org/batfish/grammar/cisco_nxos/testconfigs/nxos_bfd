@@ -1,0 +1,10 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_bfd
+!
+
+bfd interval 50 min_rx 50 multiplier 3
+bfd echo-interface Loopback0
+
+interface Loopback0
+  ip address 1.0.0.1/32

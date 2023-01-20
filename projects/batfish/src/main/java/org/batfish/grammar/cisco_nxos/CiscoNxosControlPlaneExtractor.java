@@ -56,6 +56,7 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.AAA_
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.AAA_GROUP_SERVER_RADIUS_USE_VRF;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.AAA_GROUP_SERVER_TACACSP_SOURCE_INTERFACE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.AAA_GROUP_SERVER_TACACSP_USE_VRF;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.BFD_ECHO_INTERFACE;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.BGP_ADDITIONAL_PATHS_ROUTE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.BGP_ADVERTISE_MAP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.BGP_ATTRIBUTE_MAP;
@@ -296,6 +297,8 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Allowas_in_max_occurrences
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.As_path_regexContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Banner_execContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Banner_motdContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Bfd_echo_interfaceContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Bfd_parametersContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Bgp_asnContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Bgp_asn_rangeContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.Bgp_instanceContext;
@@ -893,6 +896,8 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
       LongSpace.of(Range.closed(1L, 2_560_000_000L));
   private static final LongSpace BANDWIDTH_PORT_CHANNEL_RANGE =
       LongSpace.of(Range.closed(1L, 3_200_000_000L));
+  private static final IntegerSpace BFD_MULTIPLIER_RANGE = IntegerSpace.of(Range.closed(1, 50));
+  private static final IntegerSpace BFD_TIMER_RANGE = IntegerSpace.of(Range.closed(50, 999));
   private static final IntegerSpace BGP_ALLOWAS_IN = IntegerSpace.of(Range.closed(1, 10));
   private static final LongSpace BGP_ASN_RANGE = LongSpace.of(Range.closed(1L, 4294967295L));
   private static final IntegerSpace BGP_EBGP_MULTIHOP_TTL_RANGE =
@@ -1516,6 +1521,37 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   public void exitBanner_motd(Banner_motdContext ctx) {
     String body = ctx.body != null ? ctx.body.getText() : "";
     _c.setBannerMotd(body);
+  }
+
+  @Override
+  public void exitBfd_echo_interface(Bfd_echo_interfaceContext ctx) {
+    Optional<String> inameOrError = toString(ctx, ctx.name);
+    if (!inameOrError.isPresent()) {
+      return;
+    }
+    String name = inameOrError.get();
+    _c.referenceStructure(INTERFACE, name, BFD_ECHO_INTERFACE, ctx.name.getStart().getLine());
+  }
+
+  @Override
+  public void exitBfd_parameters(Bfd_parametersContext ctx) {
+    Optional<Integer> intervalMsOrErr =
+        toIntegerInSpace(ctx, ctx.interval, BFD_TIMER_RANGE, "bfd tx timer ms");
+    if (!intervalMsOrErr.isPresent()) {
+      return;
+    }
+
+    Optional<Integer> minRxMsOrErr =
+        toIntegerInSpace(ctx, ctx.min_rx, BFD_TIMER_RANGE, "bfd rx timer ms");
+    if (!minRxMsOrErr.isPresent()) {
+      return;
+    }
+
+    Optional<Integer> multiplierOrErr =
+        toIntegerInSpace(ctx, ctx.multiplier, BFD_MULTIPLIER_RANGE, "bfd multiplier");
+    if (!multiplierOrErr.isPresent()) {
+      return;
+    }
   }
 
   @Override

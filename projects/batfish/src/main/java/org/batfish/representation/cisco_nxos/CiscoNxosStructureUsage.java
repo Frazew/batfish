@@ -8,6 +8,7 @@ public enum CiscoNxosStructureUsage implements StructureUsage {
   AAA_GROUP_SERVER_RADIUS_USE_VRF("aaa group server radius use-vrf"),
   AAA_GROUP_SERVER_TACACSP_SOURCE_INTERFACE("aaa group server tacacs+ source-interface"),
   AAA_GROUP_SERVER_TACACSP_USE_VRF("aaa group server tacacs+ use-vrf"),
+  BFD_ECHO_INTERFACE("bfd echo-interface"),
   BGP_ADDITIONAL_PATHS_ROUTE_MAP("bgp address-family additional-paths route-map"),
   BGP_ADVERTISE_MAP("bgp address-family advertise-map"),
   BGP_ATTRIBUTE_MAP("bgp address-family attribute-map"),

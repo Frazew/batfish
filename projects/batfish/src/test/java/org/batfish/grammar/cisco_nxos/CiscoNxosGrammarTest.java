@@ -656,6 +656,12 @@ public final class CiscoNxosGrammarTest {
     assertThat(bannerEmpty.getBannerExec(), emptyString());
   }
 
+  @Test
+  public void testBfdParsing() {
+    String hostname = "nxos_bfd";
+    assertThat(parseVendorConfig(hostname), notNullValue());
+  }
+
   /**
    * Temporary parsing test of port of unified Cisco NX-OS BGP grammar. The test file should be
    * moved to parsing ref tests once bit is flipped on new parser.

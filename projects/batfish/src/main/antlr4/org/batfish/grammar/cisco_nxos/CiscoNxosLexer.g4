@@ -640,6 +640,8 @@ EBGP_MULTIHOP: 'ebgp-multihop';
 
 ECHO: 'echo';
 
+ECHO_INTERFACE: 'echo-interface';
+
 ECHO_REPLY: 'echo-reply';
 
 EDGE: 'edge';

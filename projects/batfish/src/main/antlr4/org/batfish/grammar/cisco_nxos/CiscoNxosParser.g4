@@ -3,6 +3,7 @@ parser grammar CiscoNxosParser;
 import
   CiscoNxos_common,
   CiscoNxos_aaa,
+  CiscoNxos_bfd,
   CiscoNxos_bgp,
   CiscoNxos_class_map,
   CiscoNxos_crypto,
@@ -53,6 +54,7 @@ statement
 :
   s_aaa
   | s_banner
+  | s_bfd
   | s_boot
   | s_class_map
   | s_control_plane
