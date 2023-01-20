@@ -492,12 +492,22 @@ i_ip_address_dhcp
 
 i_ip_dhcp
 :
-  DHCP i_ip_dhcp_relay
+  DHCP 
+  (
+    i_ip_dhcp_relay
+    | i_ip_dhcp_relay_source_interface
+  )
+  NEWLINE
 ;
 
 i_ip_dhcp_relay
 :
-  RELAY ADDRESS ip_address NEWLINE
+  RELAY ADDRESS ip_address (USE_VRF vrf = vrf_name)?
+;
+
+i_ip_dhcp_relay_source_interface
+:
+  RELAY SOURCE_INTERFACE name = interface_name
 ;
 
 i_ip_distribute_list

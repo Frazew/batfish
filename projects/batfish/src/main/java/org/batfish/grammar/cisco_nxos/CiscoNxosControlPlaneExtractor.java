@@ -109,6 +109,8 @@ import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.FLOW
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_CHANNEL_GROUP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_ACCESS_GROUP_IN;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_ACCESS_GROUP_OUT;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_DHCP_RELAY_SOURCE_INTERFACE;
+import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_DHCP_RELAY_USE_VRF;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_EIGRP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_HELLO_INTERVAL_EIGRP;
 import static org.batfish.representation.cisco_nxos.CiscoNxosStructureUsage.INTERFACE_IP_HOLD_TIME_EIGRP;
@@ -353,6 +355,7 @@ import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_address_dhcpContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_bandwidthContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_delayContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_dhcp_relayContext;
+import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_dhcp_relay_source_interfaceContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_eigrpContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_forwardContext;
 import org.batfish.grammar.cisco_nxos.CiscoNxosParser.I_ip_hello_intervalContext;
@@ -5813,6 +5816,21 @@ public final class CiscoNxosControlPlaneExtractor extends CiscoNxosParserBaseLis
   public void exitI_ip_dhcp_relay(I_ip_dhcp_relayContext ctx) {
     Ip address = toIp(ctx.ip_address());
     _currentInterfaces.forEach(i -> i.getDhcpRelayAddresses().add(address));
+
+    if (ctx.vrf != null) {
+      Optional<String> vrf = toString(ctx, ctx.vrf);
+      vrf.ifPresent(
+          s ->
+              _c.referenceStructure(
+                  VRF, s, INTERFACE_IP_DHCP_RELAY_USE_VRF, ctx.getStart().getLine()));
+    }
+  }
+
+  @Override
+  public void exitI_ip_dhcp_relay_source_interface(I_ip_dhcp_relay_source_interfaceContext ctx) {
+    String iface = _c.canonicalizeInterfaceName(ctx.name.getText());
+    _c.referenceStructure(
+        INTERFACE, iface, INTERFACE_IP_DHCP_RELAY_SOURCE_INTERFACE, ctx.getStart().getLine());
   }
 
   @Override

@@ -63,6 +63,8 @@ public enum CiscoNxosStructureUsage implements StructureUsage {
   INTERFACE_HSRP_GROUP_TRACK("interface hsrp group track"),
   INTERFACE_IP_ACCESS_GROUP_IN("interface ip access-group in"),
   INTERFACE_IP_ACCESS_GROUP_OUT("interface ip access-group out"),
+  INTERFACE_IP_DHCP_RELAY_USE_VRF("interface ip dhcp relay use-vrf"),
+  INTERFACE_IP_DHCP_RELAY_SOURCE_INTERFACE("interface ip dhcp relay source-interface"),
   INTERFACE_IP_EIGRP("interface ip eigrp"),
   INTERFACE_IP_HELLO_INTERVAL_EIGRP("interface ip hello-interval eigrp"),
   INTERFACE_IP_HOLD_TIME_EIGRP("interface ip hold-time eigrp"),
