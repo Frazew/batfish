@@ -2616,6 +2616,8 @@ VNI: 'vni';
 
 VPC: 'vpc';
 
+VPN: 'vpn';
+
 VPNV4: 'vpnv4';
 
 VPNV6: 'vpnv6';
