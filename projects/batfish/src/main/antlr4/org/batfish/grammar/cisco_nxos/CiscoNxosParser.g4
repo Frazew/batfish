@@ -85,6 +85,7 @@ statement
   | s_role
   | s_route_map
   | s_router
+  | s_scheduler
   | s_snmp_server
   | s_system
   | s_tacacs_server
@@ -495,6 +496,41 @@ s_router
     | router_rip
   )
 ;
+
+s_scheduler
+:
+  SCHEDULER
+  (
+    scheduler_aaa
+    | scheduler_logfile
+    | scheduler_job
+    | scheduler_schedule
+  )
+;
+
+scheduler_aaa: AAA_AUTHENTICATION null_rest_of_line;
+
+scheduler_logfile: LOGFILE null_rest_of_line;
+
+scheduler_job
+:
+  JOB null_rest_of_line (~END_JOB null_rest_of_line)+ END_JOB NEWLINE
+;
+
+scheduler_schedule
+:
+  SCHEDULE null_rest_of_line scheduler_schedule_definition+
+;
+
+scheduler_schedule_definition
+:
+   scheduler_schedule_definition_name
+   | scheduler_schedule_definition_time
+;
+
+scheduler_schedule_definition_name: JOB NAME job_name = WORD NEWLINE;
+
+scheduler_schedule_definition_time: TIME (job_timings = WORD)+ NEWLINE;
 
 s_system
 :

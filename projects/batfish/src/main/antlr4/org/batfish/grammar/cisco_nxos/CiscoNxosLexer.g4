@@ -25,11 +25,14 @@ tokens {
   SNMP_VERSION_1,
   SNMP_VERSION_2,
   SNMP_VERSION_2C,
+  SCHEDULER_SCRIPT_ENTRY,
   SUBDOMAIN_NAME,
   WORD
 }
 
 AAA: 'aaa';
+
+AAA_AUTHENTICATION: 'aaa-authentication';
 
 ABSOLUTE_TIMEOUT: 'absolute-timeout';
 
@@ -687,6 +690,8 @@ EIGRP
 
 ENABLE: 'enable';
 
+END_JOB: 'end-job';
+
 ENCAPSULATION: 'encapsulation';
 
 ENFORCE_BGP_MDT_SAFI: 'enforce-bgp-mdt-safi';
@@ -1087,6 +1092,16 @@ ISOLATE: 'isolate';
 
 ISOLATED: 'isolated';
 
+JOB
+:
+  'job'
+  {
+    if (lastTokenType() == SCHEDULER) {
+      pushMode(M_SchedulerScript);
+    }
+  }
+;
+
 JP_INTERVAL: 'jp-interval';
 
 JP_POLICY
@@ -1263,6 +1278,8 @@ LOG_ADJACENCY_CHANGES: 'log-adjacency-changes';
 LOG_BUFFER: 'log-buffer';
 
 LOG_NEIGHBOR_CHANGES: 'log-neighbor-changes';
+
+LOGFILE: 'logfile';
 
 LOGGING: 'logging';
 
@@ -2072,7 +2089,14 @@ SAMPLER
 
 SCHEDULE
 :
-  'schedule' -> pushMode( M_Remark )
+  'schedule'
+  {
+    if (lastTokenType() == SCHEDULER) {
+      pushMode(M_SchedulerSchedule);
+    } else {
+      pushMode(M_Remark);
+    }
+  }
 ;
 
 SCHEDULER: 'scheduler';
@@ -3694,6 +3718,133 @@ M_ServicePolicyType_QUEUING
 ;
 
 M_ServicePolicyType_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerSchedule;
+
+M_SchedulerSchedule_NAME
+:
+  'name' -> type ( NAME )
+;
+
+M_SchedulerSchedule_WORD
+:
+  F_Word -> type ( WORD )
+;
+
+M_SchedulerSchedule_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , mode ( M_SchedulerScheduleParams )
+;
+
+M_SchedulerSchedule_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerScheduleParams;
+
+M_SchedulerScheduleParams_JOB
+:
+  'job' -> type ( JOB ) , mode ( M_SchedulerScheduleParamsJob )
+;
+
+M_SchedulerScheduleParams_TIME
+:
+  'time' -> type ( TIME ) , mode ( M_SchedulerScheduleParamsTime )
+;
+
+M_SchedulerScheduleParams_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , popMode
+;
+
+M_SchedulerScheduleParams_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerScheduleParamsJob;
+
+M_SchedulerScheduleParamsJob_NAME
+:
+  'name' -> type ( NAME )
+;
+
+M_SchedulerScheduleParamsJob_WORD
+:
+  F_Word -> type ( WORD )
+;
+
+M_SchedulerScheduleParamsJob_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , mode ( M_SchedulerScheduleParams )
+;
+
+M_SchedulerScheduleParamsJob_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerScheduleParamsTime;
+
+M_SchedulerScheduleParamsTime_WORD
+:
+  F_Word -> type ( WORD )
+;
+
+M_SchedulerScheduleParamsTime_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , popMode
+;
+
+M_SchedulerScheduleParamsTime_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerScript;
+
+M_SchedulerScript_NAME
+:
+  'name' -> type ( NAME )
+;
+
+M_SchedulerScript_WORD
+:
+  F_Word -> type ( WORD )
+;
+
+M_SchedulerScript_NEWLINE
+:
+  F_Newline -> type ( NEWLINE ) , mode ( M_SchedulerScriptEntries )
+;
+
+M_SchedulerScript_WS
+:
+  F_Whitespace+ -> channel ( HIDDEN )
+;
+
+mode M_SchedulerScriptEntries;
+
+M_SchedulerScriptEntries_END_JOB
+:
+  'end-job' -> type ( END_JOB ) , popMode
+;
+
+M_SchedulerScriptEntries_NEWLINE
+:
+  F_Newline -> type ( NEWLINE )
+;
+
+M_SchedulerScriptEntries_SCRIPT_ENTRY
+:
+  F_NonNewline+ -> type ( SCHEDULER_SCRIPT_ENTRY )
+;
+
+M_SchedulerScriptEntries_WS
 :
   F_Whitespace+ -> channel ( HIDDEN )
 ;

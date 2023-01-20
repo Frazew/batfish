@@ -1,0 +1,32 @@
+!RANCID-CONTENT-TYPE: cisco-nx
+!
+hostname nxos_scheduler
+!
+
+feature scheduler
+
+scheduler logfile size 1024
+
+scheduler aaa-authentication username newuser password 7 Z98y76X54b
+
+scheduler job name test-job
+  delete testfile
+  run-script bootflash:/test-script
+  copy running-config startup-config
+end-job
+
+scheduler schedule name daily
+  job name test-job
+  time daily 10:00
+
+scheduler schedule name weekly
+  job name test-job
+  time weekly Sun:23:00
+
+scheduler schedule name monthly
+  job name test-job
+  time monthly 28:23:00
+
+scheduler schedule name recurring
+  job name test-job
+  time start now repeat 48:00

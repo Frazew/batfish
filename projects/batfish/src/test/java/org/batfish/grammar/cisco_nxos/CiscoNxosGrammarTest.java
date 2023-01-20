@@ -8120,6 +8120,11 @@ public final class CiscoNxosGrammarTest {
   }
 
   @Test
+  public void testSchedulerParsing() throws IOException {
+    assertThat(parseConfig("nxos_scheduler"), notNullValue());
+  }
+
+  @Test
   public void testSnmpServerConversion() throws IOException {
     String hostname = "nxos_snmp_server";
     Configuration c = parseConfig(hostname);
