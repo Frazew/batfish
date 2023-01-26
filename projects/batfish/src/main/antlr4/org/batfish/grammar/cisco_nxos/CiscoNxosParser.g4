@@ -210,6 +210,7 @@ s_ip
     | ip_route
     | ip_tacacs
     | ip_sla
+    | ip_allow_addr_overlap
   )
 ;
 
@@ -256,6 +257,11 @@ name_server
 :
   ip_address
   | ipv6_address
+;
+
+ip_allow_addr_overlap
+:
+   ALLOW ADDRESS_OVERLAP NEWLINE
 ;
 
 ip_null
@@ -348,7 +354,13 @@ s_ipv6
     | ipv6_dhcp
     | ipv6_prefix_list
     | ipv6_route
+    | ipv6_forward
   )
+;
+
+ipv6_forward
+:
+  FORWARD NEWLINE
 ;
 
 s_key
@@ -391,6 +403,11 @@ s_null
     | USERNAME
     | USERPASSPHRASE
     | HARDWARE
+    | CDP
+    | SNMP
+    | COPP
+    | CFS
+    | ICAM
   ) null_rest_of_line
 ;
 
@@ -442,6 +459,10 @@ no_null
     FEATURE
     | IP
     | NTP
+    | CDP
+    | IPV6
+    | NXAPI
+    | PASSWORD
   ) null_rest_of_line
 ;
 
@@ -565,12 +586,18 @@ s_system
     | sys_qos
     | sys_vlan
     | sys_nve_infra_vlans
+    | sys_routing
   )
 ;
 
 sys_nve_infra_vlans
 :
   NVE INFRA_VLANS infra_vlan = vlan_id_range NEWLINE
+;
+
+sys_routing
+:
+  ROUTING TEMPLATE_LPM_HEAVY NEWLINE
 ;
 
 sys_default

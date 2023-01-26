@@ -118,6 +118,8 @@ ADDRESS
 
 ADDRESS_FAMILY: 'address-family';
 
+ADDRESS_OVERLAP: 'address-overlap';
+
 ADDRGROUP
 :
   'addrgroup' -> pushMode ( M_Word )
@@ -498,6 +500,8 @@ CONTROL: 'control';
 CONTROL_PLANE: 'control-plane';
 
 CONVERSION_ERROR: 'conversion-error';
+
+COPP: 'copp';
 
 COPY: 'copy';
 
@@ -1031,6 +1035,8 @@ HTTPS
 HW_HASH: 'hw-hash';
 
 IBGP: 'ibgp';
+
+ICAM: 'icam';
 
 ICMP: 'icmp';
 
@@ -1951,6 +1957,8 @@ PRIV
 
 PRIVATE_VLAN: 'private-vlan';
 
+PROFILE: 'profile';
+
 PROTOCOL: 'protocol';
 
 PROTOCOL_UNREACHABLE: 'protocol-unreachable';
@@ -2181,6 +2189,8 @@ SAMPLER
   'sampler' -> pushMode(M_Word)
 ;
 
+SCALE: 'scale';
+
 SCHEDULE
 :
   'schedule'
@@ -2348,6 +2358,8 @@ STORM_CONTROL: 'storm-control';
 
 STPX: 'stpx';
 
+STRICT: 'strict';
+
 STRICT_RFC_COMPLIANT: 'strict-rfc-compliant';
 
 STUB: 'stub';
@@ -2473,6 +2485,8 @@ TCP_OPTION_LENGTH: 'tcp-option-length';
 TELNET: 'telnet';
 
 TEMPLATE: 'template';
+
+TEMPLATE_LPM_HEAVY: 'template-lpm-heavy';
 
 TENG_4X: '10g-4x';
 
@@ -2626,6 +2640,8 @@ UNICAST: 'unicast';
 UNREACHABLE: 'unreachable';
 
 UNREACHABLES: 'unreachables';
+
+UNSUPPORTED_TRANSCEIVER: 'unsupported-transceiver';
 
 UNSUPPRESS_MAP: 'unsuppress-map' -> pushMode(M_Word);
 UP: 'up';
