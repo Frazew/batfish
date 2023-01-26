@@ -595,6 +595,8 @@ DESTINATION: 'destination';
 
 DETAIL: 'detail';
 
+DETECT: 'detect';
+
 DHCP: 'dhcp';
 
 DHCP_SNOOP: 'dhcp-snoop';
@@ -2092,6 +2094,8 @@ RESPONDER
 RESTART: 'restart';
 
 RESTART_TIME: 'restart-time';
+
+RESTORE: 'restore';
 
 RETAIN: 'retain';
 
